@@ -17,7 +17,7 @@ export default {
 <template>
   <div id="header"></div>
   <div id="body">
-    <div class="task" v-for="task in tasks">
+    <div class="task" v-for="(task, index) in tasks" :key="index">
       <span><input type="checkbox" name="selected" class="selection"></span>
       <span>
         <input v-model="task.title" placeholder="{{task.title}}" class="task-title">
@@ -31,13 +31,18 @@ export default {
 </template>
 
 <style>
+body {
+  width: 300px;
+  margin: 0 auto;
+}
+
 .task {
-  border: 1px dotted black;
+  border: 1px solid black;
   border-radius: 10px;
   /*width: 300px;*/
   display: flex;
   margin-bottom: 2px;
-  padding: 5px;
+
 }
 
 .task-title {
@@ -49,7 +54,7 @@ export default {
 
 .task-description {
   display: block;
-  color: darkgrey;
+  color: #4F4F4F;
 }
 
 .task-priority {
