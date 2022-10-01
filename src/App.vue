@@ -18,7 +18,7 @@ export default {
 <template>
   <div id="header"></div>
   <div id="body">
-    <div class="task" v-for="(task, index) in tasks" :key="index">
+    <div :class="['task', 'priority-' + task.priority]" v-for="(task, index) in tasks" :key="index">
       <span>
         <input type="checkbox" name="selected" class="task-selection">
       </span>
@@ -46,6 +46,18 @@ body {
 
 span {
   margin: 3px;
+}
+
+.priority-low {
+  background-color: lightgreen;
+}
+
+.priority-medium {
+  background-color: lightyellow;
+}
+
+.priority-high {
+  background-color: lightcoral
 }
 
 .task {
