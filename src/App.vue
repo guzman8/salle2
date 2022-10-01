@@ -2,14 +2,15 @@
 export default {
   data() {
     return {
-      tasks: [{ title: "Title 1", description: "Description 1", priority: "high" },
-      { title: "Title 2", description: "Description 2", priority: "medium" },
-      { title: "Title 3", description: "Description 3", priority: "low" }]
+      tasks: [
+        { title: "Title 1", description: "Description 1", priority: "high", completed: false },
+        { title: "Title 2", description: "Description 2", priority: "medium", completed: false },
+        { title: "Title 3", description: "Description 3", priority: "low", completed: false }]
     };
   },
 
   beforeMount() {
-    console.log("The app has NOT BEEN MOUNTED yet and the name is: ");
+    console.log("Retrieving data from API or DB");
   },
 };
 </script>
@@ -18,13 +19,20 @@ export default {
   <div id="header"></div>
   <div id="body">
     <div class="task" v-for="(task, index) in tasks" :key="index">
-      <span><input type="checkbox" name="selected" class="selection"></span>
       <span>
+        <input type="checkbox" name="selected" class="task-selection">
+      </span>
+      <span class="task-body">
         <input v-model="task.title" placeholder="{{task.title}}" class="task-title">
         <input v-model="task.description" placeholder="{{task.description}}" class="task-description">
       </span>
       <span>
-        <select v-model="task.priority" placeholder="{{task.priority}}" class="task-priority"></select>
+        <select v-model="task.priority" class="task-priority" title="Priority">
+          <option>(none)</option>
+          <option>low</option>
+          <option>medium</option>
+          <option>high</option>
+        </select>
       </span>
     </div>
   </div>
@@ -32,8 +40,12 @@ export default {
 
 <style>
 body {
-  width: 300px;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+span {
+  margin: 3px;
 }
 
 .task {
@@ -42,7 +54,10 @@ body {
   /*width: 300px;*/
   display: flex;
   margin-bottom: 2px;
+}
 
+.task-body {
+  width: 300px;
 }
 
 .task-title {
@@ -50,26 +65,31 @@ body {
   font-weight: bold;
   font-size: x-small;
   font-style: italic;
+  margin-top: 5px;
+  margin-bottom: 3px;
+  width: 100%;
 }
 
 .task-description {
   display: block;
   color: #4F4F4F;
+  width: 100%;
 }
 
 .task-priority {
   /*float: right;*/
+  font-size: x-small;
 }
 
-.selection {
+.task-selection {
   border-radius: 50%;
   border: 1px solid #ddd;
-  outline: none;
-  appearance: none;
+  /* outline: none;
+  appearance: none; */
   width: 2em;
   height: 2em;
   cursor: pointer;
-  margin: 5px;
+  margin: 10px;
 }
 
 input {
