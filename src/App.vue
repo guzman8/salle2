@@ -3,12 +3,12 @@ export default {
   data() {
     return {
       tasks: [
-        { title: "Title 1", description: "Description 1", priority: "high", completed: false },
-        { title: "Title 2", description: "Description 2", priority: "medium", completed: false },
-        { title: "Title 3", description: "Description 3", priority: "low", completed: false },
-        { title: "Title 6", description: "Description 6", priority: "high", completed: false },
-        { title: "Title 4", description: "Description 4", priority: "low", completed: false },
-        { title: "Title 5", description: "Description 5", priority: "", completed: false }],
+        { id: 0, title: "Title 1", description: "Description 1", priority: "high", isCompleted: false },
+        { id: 1, title: "Title 2", description: "Description 2", priority: "medium", isCompleted: false },
+        { id: 2, title: "Title 3", description: "Description 3", priority: "low", isCompleted: false },
+        { id: 5, title: "Title 6", description: "Description 6", priority: "high", isCompleted: false },
+        { id: 3, title: "Title 4", description: "Description 4", priority: "low", isCompleted: false },
+        { id: 4, title: "Title 5", description: "Description 5", priority: "", isCompleted: false }],
       priorityValues: ["", "low", "medium", "high"],
     };
   },
@@ -24,7 +24,7 @@ export default {
     <div class="header">My tasks</div>
     <div class="menu">Task folders</div>
     <div class="tasks">list of tasks
-      <div :class="['task', 'priority-' + task.priority]" v-for="(task, index) in tasks" :key="index">
+      <div :class="['task', 'priority-' + task.priority]" v-for="(task) in tasks" :key="task.id">
         <span>
           <input type="checkbox" name="selected" class="task-selection">
         </span>
