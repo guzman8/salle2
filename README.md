@@ -27,3 +27,25 @@ npm run dev
 ```sh
 npm run build
 ```
+
+# Bootstrap
+This project uses Bootstrap 5.2 classes. The steps followed to include Bootstrap with VueJS 3.0 are:
+
+Install these two packages with npm:
+
+```sh
+npm install --save @popperjs/core bootstrap@next
+```
+
+Import Bootstrap to src/main.js:
+
+```js
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap";
+```
+## Bootstrap icons
+Also Bootstrap's icons has been installed executing this:
+
+```sh
+npm i bootstrap-icons
+```

@@ -6,11 +6,13 @@
     "build": "vite build",
     "preview": "vite preview --port 4173"
   },
-  "dependencies": {
-    "vue": "^3.2.38"
-  },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",
     "vite": "^3.0.9"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.6",
+    "bootstrap": "^5.2.2",
+    "bootstrap-icons": "^1.9.1"
   }
 }
