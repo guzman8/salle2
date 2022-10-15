@@ -8,9 +8,15 @@ export default {
 
     return { tasksStore };
   },
+  data() {
+    return {      
+      add: false
+    };
+  },
   components: {
     Task,
   },
+
   created() {
     console.log("Retrieving data from API or DB (not implemented)");
   },
@@ -27,7 +33,13 @@ export default {
     </div>
     <div class="users">users</div>
     <div class="footer">@Salle limited inc</div>
-    <div class="options">Add task / Delete selected tasks / Search</div>
+    <div class="options">
+      <button>add</button>
+      <button>delete</button>
+      <button>search</button>
+      <input placeholder="criteria">
+      <button @click="tasksStore.changeSortType()">sort</button>
+    </div>
   </div>
 </template>
 
@@ -42,6 +54,7 @@ export default {
 
 .tasks {
   grid-area: main;
+  overflow: scroll;
 }
 
 .users {
@@ -58,7 +71,7 @@ export default {
 
 .grid-container {
   width: 100%;
-  grid-template-rows: 50px 50px 1fr 50px;
+  grid-template-rows: 1fr 1fr 7fr 1fr;
   grid-template-columns: 1.5fr 3fr 2fr;
   display: grid;
   grid-template-areas:
