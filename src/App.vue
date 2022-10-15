@@ -1,23 +1,17 @@
 <script>
 import Task from "./components/task.vue";
+import { useTasksStore } from "./stores/tasks";
 
 export default {
+  setup() {
+    const tasksStore = useTasksStore();
+
+    return { tasksStore };
+  },
   components: {
     Task,
   },
-  data() {
-    return {
-      tasks: [
-        { id: 0, title: "Title 1", description: "Description 1", priority: "3", dueDate: "2018-06-12T07:30", isCompleted: false },
-        { id: 1, title: "Title 2", description: "Description 2", priority: "2", dueDate: "2018-07-12T19:30", isCompleted: false },
-        { id: 2, title: "Title 3", description: "Description 3", priority: "1", dueDate: "2018-07-12T19:30", isCompleted: false },
-        { id: 5, title: "Title 6", description: "Description 6", priority: "3", dueDate: "2018-08-12T19:30", isCompleted: false },
-        { id: 3, title: "Title 4", description: "Description 4", priority: "1", dueDate: "2018-09-12T19:30", isCompleted: false },
-        { id: 4, title: "Title 5", description: "Description 5", priority: "0", dueDate: "2018-12-12T19:30", isCompleted: false }],
-    };
-  },
-
-  beforeMount() {
+  created() {
     console.log("Retrieving data from API or DB (not implemented)");
   },
 };
@@ -28,7 +22,7 @@ export default {
     <div class="header">My tasks</div>
     <div class="menu">Task folders</div>
     <div class="tasks">
-      <task v-for="task in tasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description"
+      <task v-for="task in tasksStore.tasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description"
         :priority="task.priority" :dueDate="task.dueDate" :isCompleted="task.isCompleted" />
     </div>
     <div class="users">users</div>
