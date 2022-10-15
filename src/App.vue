@@ -38,7 +38,7 @@ export default {
       <button>delete</button>
       <button>search</button>
       <input placeholder="criteria">
-      <button @click="tasksStore.changeSortType()">sort</button>
+      <button @click="tasksStore.toggleSortByPriority()">sort</button>
     </div>
   </div>
 </template>

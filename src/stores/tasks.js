@@ -1,15 +1,19 @@
 import { defineStore } from "pinia";
 
+const SortType = { ASC: 0, DESC: 1 };   // Enum
+// The enum-like types in JS has no length property, so: Object.keys(SortType).length
+SortType.length = Object.keys(SortType).length;
+
 export const useTasksStore = defineStore("tasks", {
     state: () => ({
         tasks: [
-            { id: 0, title: "Title 1", description: "Description 1", priority: "3", dueDate: "2018-06-12T07:30", isCompleted: false },
-            { id: 1, title: "Title 2", description: "Description 2", priority: "2", dueDate: "2018-07-12T19:30", isCompleted: false },
-            { id: 2, title: "Title 3", description: "Description 3", priority: "1", dueDate: "2018-07-12T19:30", isCompleted: false },
-            { id: 5, title: "Title 6", description: "Description 6", priority: "3", dueDate: "2018-08-12T19:30", isCompleted: false },
-            { id: 3, title: "Title 4", description: "Description 4", priority: "1", dueDate: "2018-09-12T19:30", isCompleted: false },
-            { id: 4, title: "Title 5", description: "Description 5", priority: "1", dueDate: "2018-12-12T19:30", isCompleted: false }],
-        sortType:0
+            { id: 0, title: "Title 1", description: "Description 1", priority: 3, dueDate: "2018-06-12T07:30", isCompleted: false },
+            { id: 1, title: "Title 2", description: "Description 2", priority: 2, dueDate: "2018-07-12T19:30", isCompleted: false },
+            { id: 2, title: "Title 3", description: "Description 3", priority: 1, dueDate: "2018-07-12T19:30", isCompleted: false },
+            { id: 5, title: "Title 6", description: "Description 6", priority: 3, dueDate: "2018-08-12T19:30", isCompleted: false },
+            { id: 3, title: "Title 4", description: "Description 4", priority: 1, dueDate: "2018-09-12T19:30", isCompleted: false },
+            { id: 4, title: "Title 5", description: "Description 5", priority: 1, dueDate: "2018-12-12T19:30", isCompleted: false }],
+        prioritySortType: SortType.ASC,
     }),
     getters: {
         getTasks: (state) => state.tasks,
@@ -27,33 +31,20 @@ export const useTasksStore = defineStore("tasks", {
             let filteredTasks = this.tasks.filter(task => !taskIds.includes(task.id));
             this.tasks = filteredTasks;
         },
-        changeSortType(){
-            this.sortType = (this.sortType+1)%3;
-            console.log(this.sortType);
-            switch (this.sortType){
-              case 0:
-                break;
-              case 1:
-                this.tasks.sort((a,b) => {
-                  return a.priority.localeCompare(b.priority);
-                });
-                // for (let index = 0; index < this.tasks.length-1; index++) {
-                //   for (let i = 0; i < this.tasks.length-1; i++) {
-                //     if(this.tasks[i].priority < this.tasks[i+1].priority){
-                //       var task = this.tasks[i];                
-                //       this.tasks[i] = this.tasks[i+1];
-                //       this.tasks[i+1] = task;
-                //     }
-                //   }      
-                // }
-                break;
-              case 2:
-                this.tasks.sort((a,b) => {
-                  return b.priority.localeCompare(a.priority);
-                });
-                break;
-            }
-          }
+        updateTask(task) {
 
+        },
+        toggleSortByPriority() {
+            this.prioritySortType = (this.prioritySortType + 1) % SortType.length;
+
+            switch (this.prioritySortType) {
+                case SortType.ASC:
+                    this.tasks.sort((a, b) => a.priority - b.priority);
+                    break;
+                case SortType.DESC:
+                    this.tasks.sort((a, b) => b.priority - a.priority);
+                    break;
+            }
+        }
     }
 });
