@@ -27,7 +27,7 @@ export default {
     </div>
     <div class="users">users</div>
     <div class="footer">@Salle limited inc</div>
-    <div class="options">Add task / Delete selected tasks</div>
+    <div class="options">Add task / Delete selected tasks / Search</div>
   </div>
 </template>
 

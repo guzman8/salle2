@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      priorityValues: [{ id: 0, value: "(none)" }, { id: 1, value: "Low" }, { id: 2, value: "Medium" }, { id: 3, value: "High" }],
+      priorityValues: [{ id: 1, value: "Low" }, { id: 2, value: "Medium" }, { id: 3, value: "High" }],
       isEditionEnabled: false
     };
   },
