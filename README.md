@@ -43,9 +43,16 @@ Import Bootstrap to src/main.js:
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 ```
+
 ## Bootstrap icons
 Also Bootstrap's icons has been installed executing this:
 
 ```sh
 npm i bootstrap-icons
+```
+
+# Pinia
+Install Pinia to have a stateful system:
+```sh
+npm install pinia
 ```
