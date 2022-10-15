@@ -10,8 +10,14 @@ export default {
   },
   data() {
     return {      
-      add: false
+      add: false,
+      categoria: 0,
     };
+  },
+  methods:{
+    cambiarDeCategoria(cat){
+      this.categoria = cat;
+    }
   },
   components: {
     Task,
@@ -26,9 +32,14 @@ export default {
 <template>
   <div class="grid-container">
     <div class="header">My tasks</div>
-    <div class="menu">Task folders</div>
+    <div class="menu">Task folders
+      <br><button type="button" class="btn btn-primary" @click="cambiarDeCategoria(0)">todo</button><br>
+      <button type="button" class="btn btn-primary" @click="cambiarDeCategoria(1)">trabajo</button><br>
+      <button type="button" class="btn btn-primary" @click="cambiarDeCategoria(2)">casa</button><br>
+      <button type="button" class="btn btn-primary" @click="cambiarDeCategoria(3)">universidad</button>
+    </div>
     <div class="tasks">
-      <task v-for="task in tasksStore.tasks" :key="task.id" :id="task.id" :title="task.title" :description="task.description"
+      <task v-for="task in tasksStore.sortCategoria(categoria)" :key="task.id" :id="task.id" :title="task.title" :description="task.description"
         :priority="task.priority" :dueDate="task.dueDate" :isCompleted="task.isCompleted" />
     </div>
     <div class="users">users</div>
