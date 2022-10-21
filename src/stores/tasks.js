@@ -1,17 +1,12 @@
 import { defineStore } from "pinia";
-
-const SortType = { ASC: 0, DESC: 1 };   // Enum
-// The enum-like types in JS has no length property, so: Object.keys(SortType).length
-SortType.length = Object.keys(SortType).length;
-
-const URL = "https://todos-mpwar.herokuapp.com";
+import * as Util from "../globals.js";
 
 export const useTasksStore = defineStore("tasks", {
     state: () => ({
         user: "",
         tasks: [],
         categories: ["Home", "Work", "Social"], // Temporal hardcoded values
-        prioritySortType: SortType.DESC,
+        prioritySortType: Util.SortType.DESC,
         priorityValues: [{ id: 1, value: "Low" }, { id: 2, value: "Medium" }, { id: 3, value: "High" }],
     }),
     getters: {
@@ -24,14 +19,14 @@ export const useTasksStore = defineStore("tasks", {
     },
     actions: {
         toggleSortByPriority() {
-            this.prioritySortType = (this.prioritySortType + 1) % SortType.length;
-            console.log(`Sorting ${this.prioritySortType == 0 ? "ASC" : "DESC"}`);
+            this.prioritySortType = (this.prioritySortType + 1) % Util.SortType.length;
+            console.log(`Sorting ${this.prioritySortType == til.SortType.ASC ? "ASC" : "DESC"}`);
 
             switch (this.prioritySortType) {
-                case SortType.ASC:
+                case Util.SortType.ASC:
                     this.tasks.sort((a, b) => a.tags[0].priority - b.tags[0].priority);
                     break;
-                case SortType.DESC:
+                case Util.SortType.DESC:
                     this.tasks.sort((a, b) => b.tags[0].priority - a.tags[0].priority);
                     break;
             }
@@ -93,7 +88,7 @@ export const useTasksStore = defineStore("tasks", {
             console.log(task);
             // POST /users/:username/todos
             try {
-                fetch(`${URL}/users/${this.user}/todos`, {
+                fetch(`${Util.URL}/users/${this.user}/todos`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -114,7 +109,7 @@ export const useTasksStore = defineStore("tasks", {
             console.log(task);
             // PATCH /users/:username/todos/:id
             try {
-                fetch(`${URL}/users/${this.user}/todos/${task.id}`, {
+                fetch(`${Util.URL}/users/${this.user}/todos/${task.id}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json'
@@ -134,7 +129,7 @@ export const useTasksStore = defineStore("tasks", {
 
             // GET /users/:username/todos
             try {
-                fetch(`${URL}/users/${user}/todos`)
+                fetch(`${Util.URL}/users/${user}/todos`)
                     .then((response) => response.json())
                     .then((data) => this.preProcess(data));
             } catch (error) {
@@ -145,7 +140,7 @@ export const useTasksStore = defineStore("tasks", {
             taskIds.forEach((id) => {
                 // DELETE /users/:username/todos/:id
                 try {
-                    fetch(`${URL}/users/${this.user}/todos/${id}`, {
+                    fetch(`${Util.URL}/users/${this.user}/todos/${id}`, {
                         method: 'DELETE'
                     })
                         .then((response) => response.json())

@@ -1,8 +1,8 @@
 <script>
 import Task from "./components/Task.vue";
 import AppFooter from "./components/AppFooter.vue";
-
-import { useTasksStore } from "./stores/Tasks";
+import * as Util from "./globals.js";
+import { useTasksStore } from "./stores/tasks";
 
 export default {
   setup() {
@@ -13,18 +13,19 @@ export default {
   data() {
     return {
       user: "aleh",
-      SortType: { ASC: 0, DESC: 1 },   // Enum
+      SortType: Util.SortType,
     };
   },
   components: {
     Task,
     AppFooter,
-},
+  },
   methods: {
     toggleSortBy() {
       // Change button icon
+      console.log(Util.SortType);
       const button = document.getElementById("sortByInputGroup").getElementsByTagName("button")[0];
-      button.title = this.tasksStore.prioritySortType === this.SortType.ASC ? "Sort ascending" : "Sort descending";
+      button.title = this.tasksStore.prioritySortType === Util.SortType.ASC ? "Sort ascending" : "Sort descending";
 
       // Call proper sorting methods
       // TODO: Do it not only by priority
