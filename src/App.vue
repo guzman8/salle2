@@ -1,6 +1,7 @@
 <script>
 import Task from "./components/task.vue";
 import { useTasksStore } from "./stores/tasks";
+import Categorias from "./components/Categorias.vue";
 
 export default {
   setup() {
@@ -11,17 +12,20 @@ export default {
   data() {
     return {      
       add: false,
-      categoria: 0,
+      logged: false,
+      user: "",
     };
   },
   methods:{
-    cambiarDeCategoria(cat){
-      this.categoria = cat;
+    logUser(user){
+      this.user = user;
+      this.logged = true;
     }
   },
   components: {
     Task,
-  },
+    Categorias,
+},
 
   created() {
     console.log("Retrieving data from API or DB (not implemented)");
@@ -30,26 +34,31 @@ export default {
 </script>
 
 <template>
-  <div class="grid-container">
-    <div class="header">My tasks</div>
-    <div class="menu">Task folders
-      <br><button type="button" class="btn btn-primary" @click="cambiarDeCategoria(0)">todo</button><br>
-      <button type="button" class="btn btn-primary" @click="cambiarDeCategoria(1)">trabajo</button><br>
-      <button type="button" class="btn btn-primary" @click="cambiarDeCategoria(2)">casa</button><br>
-      <button type="button" class="btn btn-primary" @click="cambiarDeCategoria(3)">universidad</button>
-    </div>
-    <div class="tasks">
-      <task v-for="task in tasksStore.sortCategoria(categoria)" :key="task.id" :id="task.id" :title="task.title" :description="task.description"
-        :priority="task.priority" :dueDate="task.dueDate" :isCompleted="task.isCompleted" />
-    </div>
-    <div class="users">users</div>
-    <div class="footer">@Salle limited inc</div>
-    <div class="options">
-      <button>add</button>
-      <button>delete</button>
-      <button>search</button>
-      <input placeholder="criteria">
-      <button @click="tasksStore.changeSortType()">sort</button>
+  <div v-if="!logged">
+    <input placeholder="usuario" :value="this.user"><br>
+    <input placeholder="password" type="password"><br>
+    
+    <button @click="logUser(this.user)"><router-link to="/logged">Log in</router-link></button>
+  </div>
+  <div v-if="logged">
+    <div class="grid-container">
+      <div class="header">My tasks</div>
+      <div class="menu">
+          <categorias />
+      </div>
+      <div class="tasks">
+        <task v-for="task in tasksStore.sortCategoria()" :key="task.id" :id="task.id" :title="task.title" :description="task.description"
+          :priority="task.priority" :dueDate="task.dueDate" :isCompleted="task.isCompleted" />
+      </div>
+      <div class="users">users</div>
+      <div class="footer">@Salle limited inc</div>
+      <div class="options">
+        <button>add</button>
+        <button>delete</button>
+        <button>search</button>
+        <input placeholder="criteria">
+        <button @click="tasksStore.changeSortType()">sort</button>
+      </div>
     </div>
   </div>
 </template>

@@ -12,7 +12,9 @@ export const useTasksStore = defineStore("tasks", {
             { id: 4, title: "Title 5", description: "Description 5", priority: "1", dueDate: "2018-12-12T19:30", isCompleted: false, categoria: "universidad" },
             { id: 6, title: "hacer caca", description: "ir al baño y defecar", priority: "3", dueDate: "2020-10-15T15:00", isCompleted: false, categoria: "trabajo"}
         ],
-        sortType:0
+        sortType:0,
+        categoria: "tot",
+        categories: ["tot","casa", "trabajo", "universidad"],
     }),
     getters: {
         getTasks: (state) => state.tasks,
@@ -20,7 +22,8 @@ export const useTasksStore = defineStore("tasks", {
             return (id) => {
                 return state.tasks.find((item) => item.id === id);
             };
-        }
+        },
+        getCategories: (state) => state.categories,
     },
     actions: {
         addTask(task) {
@@ -30,47 +33,23 @@ export const useTasksStore = defineStore("tasks", {
             let filteredTasks = this.tasks.filter(task => !taskIds.includes(task.id));
             this.tasks = filteredTasks;
         },
-        sortCategoria(cat){
+        changeCategoria(cat){
+            this.categoria=cat
+        },
+        sortCategoria(){
             this.tasks = [];
             console.log("estas es la lista vacia")
             console.log(this.tasks)
-            switch (cat){
-                case 0:
-                    for (let index = 0; index < this.nonFilteredTasks.length; index++) {
-                        this.tasks.push (this.nonFilteredTasks[index])
-                    }
-                    return this.tasks;
-                    break;
-                case 1:
-                    for (let index = 0; index < this.nonFilteredTasks.length; index++) {
-                        console.log("antes");console.log(this.nonFilteredTasks[index])
-                        if (this.nonFilteredTasks[index].categoria=="trabajo"){
-                            console.log("despues");console.log(this.nonFilteredTasks[index])
-                            this.tasks.push (this.nonFilteredTasks[index])
-                        }
-                        
-                    }
-                    return this.tasks;
-                    break;
-                case 2:
-                    for (let index = 0; index < this.nonFilteredTasks.length; index++) {
-                        if (this.nonFilteredTasks[index].categoria=="casa"){
-                            this.tasks.push (this.nonFilteredTasks[index])
-                        }
-                        
-                    }
-                    return this.tasks;
-                    break;
-                case 3:
-                    for (let index = 0; index < this.nonFilteredTasks.length; index++) {
-                        if (this.nonFilteredTasks[index].categoria=="universidad"){
-                            this.tasks.push (this.nonFilteredTasks[index])
-                        }
-                        
-                    }
-                    return this.tasks;
-                    break;
+
+            for (let index = 0; index < this.nonFilteredTasks.length; index++) {
+                console.log("antes");console.log(this.nonFilteredTasks[index])
+                if (this.nonFilteredTasks[index].categoria==this.categoria || this.categoria=="tot"){
+                    console.log("despues");console.log(this.nonFilteredTasks[index])
+                    this.tasks.push (this.nonFilteredTasks[index])
+                }   
             }
+            return this.tasks;
+
         },
         changeSortType(){
             this.sortType = (this.sortType+1)%3;
