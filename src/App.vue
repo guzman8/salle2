@@ -107,6 +107,15 @@ export default {
 </template>
 
 <style>
+/* Opens Sans as main font */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+html, body {
+  font-family: "Open Sans", sans-serif;
+}
+#app {
+  font-family: 'Open Sans', sans-serif;
+}
+
 header {
   grid-area: header;
 }
