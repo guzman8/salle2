@@ -20,7 +20,7 @@ export const useTasksStore = defineStore("tasks", {
     actions: {
         toggleSortByPriority() {
             this.prioritySortType = (this.prioritySortType + 1) % Util.SortType.length;
-            console.log(`Sorting ${this.prioritySortType == til.SortType.ASC ? "ASC" : "DESC"}`);
+            console.log(`Sorting ${this.prioritySortType == Util.SortType.ASC ? "ASC" : "DESC"}`);
 
             switch (this.prioritySortType) {
                 case Util.SortType.ASC:
@@ -36,7 +36,7 @@ export const useTasksStore = defineStore("tasks", {
             // But first of all, 'createdAt' date must be converted again to API's format (ISO 8601)
             // In order to not modify the original object, let's make a deep copy
             let detachedTask = JSON.parse(JSON.stringify(task)); // Deep copy
-            detachedTask.createdAt = this.toISO8601(detachedTask.createdAt);
+            detachedTask.createdAt = Util.toISO8601(detachedTask.createdAt);
 
             // Decide whether the task is new or not
             if (task.id) {
@@ -52,7 +52,7 @@ export const useTasksStore = defineStore("tasks", {
 
             data.forEach(task => {
                 // Converting ISO date format to local date time for a proper visualization
-                task.createdAt = this.toLocalDateTime(task.createdAt);
+                task.createdAt = Util.toLocalDateTime(task.createdAt);
 
                 // Giving format to 'tags' array
                 // Priority object
@@ -149,26 +149,6 @@ export const useTasksStore = defineStore("tasks", {
                     console.log(error);
                 }
             });
-        },
-        /** Utility methods */
-        toLocalDateTime(stringISO8601) {
-            // Input format is ISO 8601 (YYYY-MM-DDTHH:mm:ss.sssZ)
-            let dateToConvert = new Date(stringISO8601);
-            let tzOffset = (new Date()).getTimezoneOffset() * 60000; // Time zone offset in millis
-            let localISOTime = (new Date(dateToConvert.getTime() - tzOffset)).toISOString().slice(0, -1); // Removes the 'Z'ulu char
-
-            //console.log(`localISOTime: ${localISOTime}`);
-            return localISOTime;
-        },
-        toISO8601(stringLocalDateTime) {
-            console.log(stringLocalDateTime);
-            // Input format is YYYY-MM-DDTHH:mm:ss.sss in local time
-            let dateToConvert = new Date(stringLocalDateTime + 'Z'); // Adding 'Z'ulu char to be a valid ISO8601, but includes the TZ offset
-            let tzOffset = (new Date()).getTimezoneOffset() * 60000; // Time zone offset in millis
-            let isoTime = (new Date(dateToConvert.getTime() + tzOffset)).toISOString();
-
-            //console.log(`isoTime: ${isoTime}`);
-            return isoTime;
         },
     }
 });
