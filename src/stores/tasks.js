@@ -31,22 +31,10 @@ export const useTasksStore = defineStore("tasks", {
             this.sortCategoria();
         },
         sortCategoria(){
-            this.filteredTasks = [];
-            console.log("estas es la lista vacia")
-            console.log(this.filteredTasks)
 
-            for (let index = 0; index < this.tasks.length; index++) {
-                console.log("antes");console.log(this.filteredTasks[index])
-                console.log(`this.tasks[index].tags[1].categories[0]==this.categoria${this.tasks[index].tags[1].categories[0]==this.categoria}`)
-                console.log(`this.categoria${this.categoria}`)
-                console.log(`this.tasks[index].tags[1].categories[0]${this.tasks[index].tags[1].categories[0]}`)
-                console.log(this.tasks[index])
-                if (this.tasks[index].tags[1].categories==this.categoria || this.categoria=="tot"){
-                    console.log("despues");console.log(this.filteredTasks[index])
-                    this.filteredTasks.push (this.tasks[index])
-                }   
-            }
-            return this.tasks;
+            this.filteredTasks = this.tasks.filter(task => task.tags[1].categories == this.categoria || this.categoria=="tot");
+
+            
 
         },
         toggleSortByPriority() {
