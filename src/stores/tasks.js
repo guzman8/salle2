@@ -15,6 +15,8 @@ export const useTasksStore = defineStore("tasks", {
         categories: ["tot","casa", "trabajo", "universidad"],
         prioritySortType: SortType.DESC,
         priorityValues: [{ id: 1, value: "Low" }, { id: 2, value: "Medium" }, { id: 3, value: "High" }],
+        user: "",
+        logged: false,
     }),
     getters: {
         getTasks: (state) => state.tasks,
@@ -26,6 +28,11 @@ export const useTasksStore = defineStore("tasks", {
         getCategories: (state) => state.categories,
     },
     actions: {
+        logUser(user){
+            this.logged=true
+            this.user = user
+            console.log(`this is the user name received ${this.user}`)
+        },
         changeCategoria(cat){
             this.categoria=cat;
             this.sortCategoria();
@@ -33,8 +40,6 @@ export const useTasksStore = defineStore("tasks", {
         sortCategoria(){
 
             this.filteredTasks = this.tasks.filter(task => task.tags[1].categories == this.categoria || this.categoria=="tot");
-
-            
 
         },
         toggleSortByPriority() {
@@ -166,14 +171,13 @@ export const useTasksStore = defineStore("tasks", {
                 console.log(error);
             }
         },
-        readTasksFromUser(user) {
+        readTasksFromUser() {
             // Storing the user into the state
-            this.user = user;
             this.task = []; // Emptying the task list
 
             // GET /users/:username/todos
             try {
-                fetch(`${URL}/users/${user}/todos`)
+                fetch(`${URL}/users/${this.user}/todos`)
                     .then((response) => response.json())
                     .then((data) => this.preProcess(data));
             } catch (error) {
