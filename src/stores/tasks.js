@@ -130,6 +130,7 @@ export const useTasksStore = defineStore("tasks", {
 
             console.log("Initial tasks data after preprocessing:");
             console.log(this.tasks);
+            this.changeCategoria("tot");
         },
         /** CRUD operations */
         createTask(task) {
