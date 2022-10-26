@@ -1,5 +1,6 @@
 <script>
 import Task from "./Task.vue";
+import Categorias from "./Categorias.vue"
 import { useTasksStore } from "../stores/tasks";
 export default {
   setup() {
@@ -13,6 +14,7 @@ export default {
   },
   components: {
     Task,
+    Categorias
 },
   methods: {
     toggleSortBy() {
@@ -33,8 +35,7 @@ export default {
 </script>
 
 <template>
-  <div class="grid-container">
-    <section id="categories">Categories</section>
+
     <section id="options">
       <div class="btn-toolbar btn-toolbar-sm" role="toolbar" aria-label="Toolbar of options">
         <div class="btn-group ms-3 me-2" role="group" aria-label="Add or Delete">
@@ -86,49 +87,15 @@ export default {
         </div>
       </div>
     </section>
-    <section id="tasks">
-      <Task v-for="task in tasksStore.tasks" :key="task.id" :initialTask="task" />
+    <section id="folder"> <Categorias /></section>
+    <section id="main">
+      <Task v-for="task in tasksStore.filteredTasks" :key="task.id" :initialTask="task" />
     </section>
     <!-- </main> -->
-  </div>
+
 </template>
 
 <style>
-header {
-  grid-area: header;
-}
-#categories {
-  grid-area: categories;
-}
-#options {
-  grid-area: options;
-}
-#tasks {
-  grid-area: main;
-  overflow: scroll;
-}
-footer {
-  grid-area: footer;
-}
-.grid-container {
-  width: 100%;
-  grid-template-rows: auto 1fr 7fr auto;
-  grid-template-columns: 2fr 5fr;
-  display: grid;
-  grid-template-areas:
-    'header header'
-    'categories options'
-    'categories main'
-    'categories footer';
-  padding: 1px;
-  gap: 1px;
-  background-color: #b6b8b9;
-  height: 100vh;
-}
-.grid-container :is(header, section) {
-  background-color: rgba(255, 255, 255, 0.8);
-  text-align: center;
-  padding: 20px 0;
-  font-size: 30px;
-}
+
+
 </style>

@@ -21,42 +21,51 @@ export default {
 
 <template>
   <div class="grid-container">
-    <header width="100%" v-if="tasksStore.logged">Tasks of {{ tasksStore.user }}</header>
-    <header width="100%" v-else>Welcome to the task manager</header>
+    <header id="header" v-if="tasksStore.logged">Tasks of {{ tasksStore.user }}</header>
+    <header id="header" v-else>Welcome to the task manager</header>
     <!-- <main> -->
     <!-- Incompatible with grid layout -->
-    <div id="routView">
-      <router-view></router-view>
-    </div>
+
+      <router-view class="grid_bla"></router-view>
+
     <!-- </main> -->
-    <footer>
+    <footer id="footer">
       <AppFooter />
     </footer>
   </div>
 </template>
 
 <style>
-header {
+#header {
   grid-area: header;
 }
 
-footer {
+#footer {
   grid-area: footer;
 }
 
-#routView {
-  grid-area: routView;
+#options{
+  grid-area: options;
+}
+
+#main{
+  grid-area: main;
+  overflow: scroll;
+}
+
+#folder{
+  grid-area: folder;
 }
 
 .grid-container {
   width: 100%;
-  grid-template-rows: auto 1fr 7fr auto;
+  grid-template-rows: 1fr 1fr 7fr 1fr;
   grid-template-columns: 2fr 5fr;
   display: grid;
   grid-template-areas:
     'header header'
-    'routView routView'
-    'routView routView'
+    'options options'
+    'folder main'
     'footer footer';
   padding: 1px;
   gap: 1px;

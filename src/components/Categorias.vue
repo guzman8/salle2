@@ -15,17 +15,11 @@ export default {
 <template>
     Task folders
     <br>
-    
     <button class="btn btn-outline-danger mt-3" v-for="categoria in tasksStore.getCategories" :key="categoria.id" @click="tasksStore.changeCategoria(categoria)">{{categoria}}</button>
-
-
 
 </template>
 
 <style>
 
-#but{
-    display: inline-block;
-}
 
 </style>
