@@ -17,7 +17,6 @@ export function toLocalDateTime(stringISO8601) {
 };
 
 export function toISO8601(stringLocalDateTime) {
-    console.log(stringLocalDateTime);
     // Input format is YYYY-MM-DDTHH:mm:ss.sss in local time
     let dateToConvert = new Date(stringLocalDateTime + 'Z'); // Adding 'Z'ulu char to be a valid ISO8601, but includes the TZ offset
     let tzOffset = (new Date()).getTimezoneOffset() * 60000; // Time zone offset in millis

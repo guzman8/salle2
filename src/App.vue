@@ -1,7 +1,12 @@
 <script>
+// Components
+import AppHeader from "./components/AppHeader.vue";
+import TaskCategories from "./components/TaskCategories.vue";
 import Task from "./components/Task.vue";
 import AppFooter from "./components/AppFooter.vue";
+// Utility code
 import * as Util from "./globals.js";
+// Pinia store
 import { useTasksStore } from "./stores/tasks";
 
 export default {
@@ -14,23 +19,30 @@ export default {
     return {
       user: "aleh",
       SortType: Util.SortType,
+      searchField: "title",
     };
   },
   components: {
+    AppHeader,
+    TaskCategories,
     Task,
     AppFooter,
   },
   methods: {
+    // TODO: Do it not only by priority
     toggleSortBy() {
       // Change button icon
-      console.log(Util.SortType);
       const button = document.getElementById("sortByInputGroup").getElementsByTagName("button")[0];
-      button.title = this.tasksStore.prioritySortType === Util.SortType.ASC ? "Sort ascending" : "Sort descending";
 
-      // Call proper sorting methods
-      // TODO: Do it not only by priority
-      this.tasksStore.toggleSortByPriority();
-    }
+      if (this.tasksStore.prioritySortType === Util.SortType.ASC) {
+        button.title = "Sort descending";
+        this.tasksStore.sortByPriority(Util.SortType.DESC);
+      }
+      else {
+        button.title = "Sort ascending";
+        this.tasksStore.sortByPriority(Util.SortType.ASC);
+      }
+    },
   },
   // Livecycle events
   created() {
@@ -42,14 +54,18 @@ export default {
 
 <template>
   <div class="grid-container">
-    <header>Tasks of {{ user }}</header>
+    <header>
+      <AppHeader :user="user" />
+    </header>
     <!-- <main> -->
     <!-- Incompatible with grid layout -->
-    <section id="categories">Categories</section>
+    <section id="categories">
+      <TaskCategories />
+    </section>
     <section id="options">
       <div class="btn-toolbar btn-toolbar-sm" role="toolbar" aria-label="Toolbar of options">
         <div class="btn-group ms-3 me-2" role="group" aria-label="Add or Delete">
-          <button type="button" class="btn btn-success" title="Add task" @click="tasksStore.createTask()">
+          <button type="button" class="btn btn-success" title="Add task" @click="tasksStore.initNewLocalTask()">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-plus"
               viewBox="0 0 16 16">
               <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z" />
@@ -57,7 +73,7 @@ export default {
                 d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z" />
             </svg>
           </button>
-          <button type="button" class="btn btn-danger" title="Delete task">
+          <button type="button" class="btn btn-danger" title="Delete task" @click="tasksStore.deleteSelectedTasks()">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash"
               viewBox="0 0 16 16">
               <path
@@ -70,11 +86,11 @@ export default {
 
         <div id="searchByInputGroup" class="input-group input-group-sm me-auto w-50">
           <label class="input-group-text" aria-label="Search by">Search by</label>
-          <select class="form-select" aria-label="Select field to search by">
+          <select class="form-select " aria-label="Select field to search by">
             <option selected>Title</option>
           </select>
-          <input type="text" class="w-50 form-control" placeholder="Type something & press Enter"
-            aria-label="Type something and press Enter">
+          <input type="search" class="w-50 form-control" placeholder="Type something & press Enter"
+            aria-label="Type something and press Enter" @change="tasksStore.searchBy()">
         </div>
 
         <div id="sortByInputGroup" class="input-group input-group-sm me-3" role="group" aria-label="Sort by">
@@ -110,9 +126,12 @@ export default {
 <style>
 /* Opens Sans as main font */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-html, body {
+
+html,
+body {
   font-family: "Open Sans", sans-serif;
 }
+
 #app {
   font-family: 'Open Sans', sans-serif;
 }
@@ -148,8 +167,8 @@ footer {
     'categories options'
     'categories main'
     'categories footer';
-  padding: 1px;
-  gap: 1px;
+  padding: 0px;
+  gap: 0px;
   background-color: #b6b8b9;
   height: 100vh;
 }
