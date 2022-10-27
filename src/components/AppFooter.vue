@@ -14,8 +14,8 @@
 }
 
 #footer a {
-    text-decoration: underline;
     /* Removes anchor decorations except the underline */
+    text-decoration: underline;
     color: inherit;
 }
 </style>
