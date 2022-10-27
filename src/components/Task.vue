@@ -105,8 +105,8 @@ export default {
         </div>
       </div>
 
-      <!-- Categories selector -->
-      <div class="col-auto me-auto">
+      <!-- Categories selector (TODO made it multiselection, adapting the store to it) -->
+      <div class="col-auto">
         <div class="input-group flex-nowrap input-group-sm">
           <label class="input-group-text x-small">Categories</label>
           <select class="form-select form-select-sm x-small" v-model="task.tags[1].categories"

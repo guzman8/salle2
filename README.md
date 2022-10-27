@@ -56,3 +56,9 @@ Install Pinia to have a stateful system:
 ```sh
 npm install pinia
 ```
+
+# Vue Router
+Install Vue Router for a routing-enabled application:
+```sh
+npm install vue-router@4
+```

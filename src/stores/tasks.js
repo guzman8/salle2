@@ -11,7 +11,7 @@ export class Task {
             this.text = "";
             this.description = "";
             // 'tags' contains Priority & Categories objects
-            this.tags = [{ priority: 1 }, { categories: "" }];  // 1 = The lowest priority
+            this.tags = [{ priority: 1 }, { categories: undefined }];  // 1 = The lowest priority
             // Converting ISO date format to local date time for a proper visualization
             this.createdAt = Util.toLocalDateTime(new Date());
             this.completed = false;
@@ -25,7 +25,7 @@ export class Task {
             this.description = apiTask.description;
             // Giving format to 'tags' array
             if (apiTask.tags.length === 0) {
-                this.tags = [{ priority: 1 }, { categories: "" }];
+                this.tags = [{ priority: 1 }, { categories: undefined }];
             }
             else {
                 this.tags = apiTask.tags;
@@ -63,14 +63,20 @@ export class Task {
 
 export const useTasksStore = defineStore("tasks", {
     state: () => ({
-        user: "",
+        user: undefined,
+        logged: false,
         tasks: [],  // It could be a map with the ID as a key
-        categories: ["Home", "Work", "Social"], // Temporary hardcoded values
+        filterCategory: undefined,
+        categories: ["Home", "Work", "Social", "University"],
         prioritySortType: Util.SortType.DESC,
         priorityValues: [{ id: 1, value: "Low" }, { id: 2, value: "Medium" }, { id: 3, value: "High" }],
     }),
     getters: {
+        getUser: (state) => state.user,
+        isLogged: (state) => state.logged,
+        getCategories: (state) => state.categories,
         getTasks: (state) => state.tasks,
+        // Filters here
         getTaskById: (state) => {
             return (id) => {
                 return state.tasks.find((item) => item.id === id);
@@ -81,13 +87,13 @@ export const useTasksStore = defineStore("tasks", {
                 return state.tasks.map((item) => item.id).indexOf(id);
             };
         },
-        getSelectedTasks: (state) => state.tasks.filter(task => task.isSelected),
         getTasksExceptId: (state) => {
             return (id) => {
                 return state.tasks.filter(task => task.id !== id);
             };
         },
-        // Filters here
+        getSelectedTasks: (state) => state.tasks.filter(task => task.isSelected),
+        getFilteredTasks: (state) => state.tasks.filter(task => task.tags[1].categories === state.filterCategory || state.filterCategory === undefined),
     },
     actions: {
         // Main toolbar actions
@@ -144,6 +150,17 @@ export const useTasksStore = defineStore("tasks", {
             console.log(this.tasks);
         },
         /** Other actions */
+        setUser(user) {
+            this.logged = true;
+            this.user = user;
+
+            console.log(`The user '${this.user}' has logged in`);
+        },
+        changeCategory(category) {
+            this.filterCategory = category;
+
+            console.log(`Filtering by category: ${category}`);
+        },
         processListOfTasks(apiListOfTasks) {
             console.log(`Api's tasks list from user '${this.user}':`);
             console.log(apiListOfTasks);
@@ -156,8 +173,8 @@ export const useTasksStore = defineStore("tasks", {
                 if (apiTask.tags.length !== 0) {
                     console.log("Tags that come from API:")
                     console.log(apiTask.tags);
-                    // At this moment, categories is single-valued in the API
-                    this.categories = [...new Set([...this.categories, apiTask.tags[1].categories])]
+                    // At this moment, categories is single-valued in the API. Filtering falsy and null-like values.
+                    this.categories = [...new Set([...this.categories, apiTask.tags[1].categories])].filter(e => e)
                     console.log(`Categories stored: [${this.categories}]`)
                 }
 
@@ -221,20 +238,17 @@ export const useTasksStore = defineStore("tasks", {
                     .then((response) => response.json());
 
                 // Finally, updating the local task
-                this.tasks.splice(this.getIndexTaskById(undefined),1);
+                this.tasks.splice(this.getIndexTaskById(undefined), 1);
                 this.tasks.unshift(new Task(apiTask));
                 //this.sortByPriority();
             } catch (error) {
                 console.log(error);
             }
         },
-        async readTasksFromUser(user) {
-            // Storing the user into the state
-            this.user = user;
-
+        async readTasksFromUser() {
             // GET /users/:username/todos
             try {
-                fetch(`${Util.URL}/users/${user}/todos`)
+                fetch(`${Util.URL}/users/${this.user}/todos`)
                     .then((response) => response.json())
                     .then((apiListOfTasks) => this.processListOfTasks(apiListOfTasks));
             } catch (error) {
