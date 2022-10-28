@@ -48,6 +48,7 @@ body {
 
 header {
   grid-area: header;
+  align-items: end;
 }
 
 footer {
