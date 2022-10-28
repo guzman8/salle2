@@ -66,7 +66,9 @@ export const useTasksStore = defineStore("tasks", {
         user: undefined,
         logged: false,
         tasks: [],  // It could be a map with the ID as a key
-        filterCategory: undefined,
+        filterCategory: undefined, // = No filter, so all tasks' categories are accepted,
+        filterSearchField: "text", // By default, search by 'title' (named in the API as 'text')
+        filterSearchValue: "",
         categories: ["Home", "Work", "Social", "University"],
         prioritySortType: Util.SortType.DESC,
         priorityValues: [{ id: 1, value: "Low" }, { id: 2, value: "Medium" }, { id: 3, value: "High" }],
@@ -93,7 +95,21 @@ export const useTasksStore = defineStore("tasks", {
             };
         },
         getSelectedTasks: (state) => state.tasks.filter(task => task.isSelected),
-        getFilteredTasks: (state) => state.tasks.filter(task => task.tags[1].categories === state.filterCategory || state.filterCategory === undefined),
+        getFilteredTasks: (state) => state.tasks.filter(task => {
+            console.log(`Filter by category '${state.filterCategory}'`);
+            console.log(`Search in field '${state.filterSearchField}' the value '${state.filterSearchValue.toLocaleLowerCase()}'`);
+            // Filter by category and by the search field
+            let hasCategory = task.tags[1].categories === state.filterCategory
+                || state.filterCategory === undefined;
+            let hasSearchedText = task[state.filterSearchField].toLocaleLowerCase().includes(state.filterSearchValue)
+                || state.filterSearchValue === "";
+            if (hasCategory && hasSearchedText) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }),
     },
     actions: {
         // Main toolbar actions
@@ -104,6 +120,10 @@ export const useTasksStore = defineStore("tasks", {
 
             console.log(newTask);
             this.tasks.unshift(newTask); // Put at the beginning
+        },
+        searchByField(field, value) {
+            this.filterSearchField = field;
+            this.filterSearchValue = value;
         },
         sortByPriority(sortType) {
             if (typeof sortType !== 'undefined') {
@@ -159,7 +179,7 @@ export const useTasksStore = defineStore("tasks", {
         changeCategory(category) {
             this.filterCategory = category;
 
-            console.log(`Filtering by category: ${category}`);
+            console.log(`Changed category filter by: ${category}`);
         },
         processListOfTasks(apiListOfTasks) {
             console.log(`Api's tasks list from user '${this.user}':`);

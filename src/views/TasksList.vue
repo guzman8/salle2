@@ -16,7 +16,8 @@ export default {
     data() {
         return {
             SortType: Util.SortType,
-            searchField: "title", // TODO
+            searchField: this.tasksStore.filterSearchField,
+            searchValue: "",
         };
     },
     components: {
@@ -38,6 +39,10 @@ export default {
                 this.tasksStore.sortByPriority(Util.SortType.ASC);
             }
         },
+        searchBy() {
+            //console.log(`Search in field '${this.searchField}' the value '${this.searchValue.toLocaleLowerCase()}'`);
+            this.tasksStore.searchByField(this.searchField, this.searchValue.toLocaleLowerCase());
+        }
     },
     // Livecycle events (NOTE: With the user taken from the Login, it doesn't work. Call to API done in the Login component)
     // created() {
@@ -73,13 +78,14 @@ export default {
                 </button>
             </div>
 
-            <div id="searchByInputGroup" class="input-group input-group-sm me-auto w-50">
+            <div id="searchByInputGroup" class="input-group input-group-sm me-auto">
                 <label class="input-group-text" aria-label="Search by">Search by</label>
-                <select class="form-select " aria-label="Select field to search by">
-                    <option selected>Title</option>
+                <select class="form-select " v-model="searchField" aria-label="Select field to search by">
+                    <option selected value="text">Title</option>
+                    <option selected value="description">Description</option>
                 </select>
-                <input type="search" class="w-50 form-control" placeholder="Type something & press Enter"
-                    aria-label="Type something and press Enter" @change="tasksStore.searchBy()">
+                <input type="search" class="form-control" placeholder="Type something..."
+                    aria-label="Type something and press Enter" v-model="searchValue" @input="searchBy()">
             </div>
 
             <div id="sortByInputGroup" class="input-group input-group-sm me-3" role="group" aria-label="Sort by">
