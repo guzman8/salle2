@@ -96,10 +96,14 @@ export const useTasksStore = defineStore("tasks", {
         },
         getSelectedTasks: (state) => state.tasks.filter(task => task.isSelected),
         getFilteredTasks: (state) => state.tasks.filter(task => {
+            console.log(`Filter by category '${state.filterCategory}'`);
             console.log(`Search in field '${state.filterSearchField}' the value '${state.filterSearchValue.toLocaleLowerCase()}'`);
             // Filter by category and by the search field
-            if ((task.tags[1].categories === state.filterCategory || state.filterCategory === undefined)
-                && (task[state.filterSearchField].toLocaleLowerCase().includes(state.filterSearchValue)) || state.filterSearchValue === "") {
+            let hasCategory = task.tags[1].categories === state.filterCategory
+                || state.filterCategory === undefined;
+            let hasSearchedText = task[state.filterSearchField].toLocaleLowerCase().includes(state.filterSearchValue)
+                || state.filterSearchValue === "";
+            if (hasCategory && hasSearchedText) {
                 return true;
             }
             else {
@@ -175,7 +179,7 @@ export const useTasksStore = defineStore("tasks", {
         changeCategory(category) {
             this.filterCategory = category;
 
-            console.log(`Filtering by category: ${category}`);
+            console.log(`Changed category filter by: ${category}`);
         },
         processListOfTasks(apiListOfTasks) {
             console.log(`Api's tasks list from user '${this.user}':`);
