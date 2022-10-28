@@ -80,12 +80,12 @@ export default {
 
             <div id="searchByInputGroup" class="input-group input-group-sm me-auto">
                 <label class="input-group-text" aria-label="Search by">Search by</label>
-                <select class="form-select " v-model="searchField" aria-label="Select field to search by">
+                <select class="form-select" v-model="searchField" aria-label="Select field to search by">
                     <option selected value="text">Title</option>
                     <option selected value="description">Description</option>
                 </select>
                 <input type="search" class="form-control" placeholder="Type something..."
-                    aria-label="Type something and press Enter" v-model="searchValue" @input="searchBy()">
+                    aria-label="Type something..." v-model="searchValue" @input="searchBy()">
             </div>
 
             <div id="sortByInputGroup" class="input-group input-group-sm me-3" role="group" aria-label="Sort by">

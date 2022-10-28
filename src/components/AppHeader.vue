@@ -12,9 +12,15 @@ export default {
         return {
         }
     },
+    methods: {
+        logout() {
+            // To the login page
+            this.$router.push({ path: "/" });
+        }
+    },
     created() {
         // Check if user is logged in. Otherwise, route to login page
-        if(typeof this.user === 'undefined') {
+        if (typeof this.user === 'undefined') {
             this.$router.push({ path: "/" });
         }
     }
@@ -23,8 +29,13 @@ export default {
 
 <template>
     <div id="header">
-        <h1 v-if="tasksStore.isLogged">Tasks of <span class="user-in-header">{{ tasksStore.getUser }}</span></h1>
-        <h1 v-else>Welcome to the task manager</h1>
+        <div v-if="tasksStore.isLogged">
+            <h1>Tasks of <span class="user-in-header">{{ tasksStore.getUser }}</span></h1>
+            <a href="" @click="logout()">Logout</a>
+        </div>
+        <div v-else>
+            <h1>Welcome to the task manager</h1>
+        </div>
     </div>
 </template>
 
@@ -46,6 +57,6 @@ export default {
 .user-in-header {
     color: yellow;
     font-weight: bolder;
-    text-shadow: 2px 4px 3px rgba(0,0,0,0.5);
+    text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.5);
 }
 </style>
