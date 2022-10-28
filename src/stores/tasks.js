@@ -48,11 +48,15 @@ export class Task {
     }
 
     toApiTask() {
-        let apiTask = { ...this };
-
-        // Removing unneeded properties
-        delete apiTask.isEditionEnabled;
-        delete apiTask.isSelected;
+        let apiTask = {
+            id: this.id,
+            author: this.author,
+            text: this.text,
+            description: this.description,
+            tags: this.tags,
+            createdAt: Util.toISO8601(this.createdAt),
+            completed: this.completed,
+        };
 
         console.log("toApiTask, this: ");
         console.log(this);
