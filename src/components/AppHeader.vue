@@ -31,7 +31,7 @@ export default {
     <div id="header">
         <div v-if="tasksStore.isLogged">
             <h1>Tasks of <span class="user-in-header">{{ tasksStore.getUser }}</span></h1>
-            <a href="" @click="logout()">Logout</a>
+            <div id="al_right"><a href="" @click="logout()">Logout</a></div>
         </div>
         <div v-else>
             <h1>Welcome to the task manager</h1>
@@ -52,6 +52,11 @@ export default {
     text-decoration: underline;
     /* Removes anchor decorations except the underline */
     color: inherit;
+    margin-right: 0px;
+}
+
+#al_right {
+    text-align: right;
 }
 
 .user-in-header {
