@@ -14,11 +14,17 @@ export default {
     },
     methods: {
         loginUser() {
+            // TODO: Validate fields programatically
+
             this.tasksStore.setUser(this.user);
 
             console.log("Retrieving data from API or DB");
             this.tasksStore.readTasksFromUser();
         }
+    },
+    created() {
+        // Reset the storage
+        this.tasksStore.$reset();
     }
 };
 </script>
